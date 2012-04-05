@@ -2,13 +2,17 @@
 
 Compile your handlebars templates into functions compatible with Ember.js.
 
-    [dieter/ember "0.1.0"]
+## Usage
+
+In your project.clj file
+
+    [dieter/ember "0.2.0"]
 
 Insert it into your ring middleware stack
 
 ```clojure
 (use 'dieter)
-(require 'dieter.ember)
+(require 'dieter.asset.ember)
 (-> app
     (asset-pipeline config-options))
 ```
