@@ -1,9 +1,9 @@
 (ns dieter.asset.ember
   (:require
+   dieter.asset
    dieter.asset.javascript
    [clojure.string :as s])
   (:use
-   [dieter.asset :only [register]]
    [dieter.rhino :only [with-scope call make-pool]]))
 
 (defn filename-without-ext [file]
@@ -25,5 +25,3 @@
   dieter.asset.Asset
   (read-asset [this options]
     (dieter.asset.javascript.Js. (:file this) (preprocess-handlebars (:file this)))))
-
-(register "hbs" map->Handlebars)

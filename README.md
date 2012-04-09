@@ -11,8 +11,11 @@ In your project.clj file
 Insert it into your ring middleware stack
 
 ```clojure
-(use 'dieter)
-(require 'dieter.asset.ember)
+(use '[dieter             :only [asset-pipeline]])
+(use '[dieter.asset.ember :only [map->Ember]])
+(use '[dieter.asset       :only [register]])
+
+(register "hbs" map->Ember)
 (-> app
     (asset-pipeline config-options))
 ```
