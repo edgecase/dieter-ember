@@ -9,3 +9,5 @@ pom.xml
 /resources/asset-cache
 /test/fixtures/asset-cache
 /.rvmrc
+/.lein-repl-history
+/target/

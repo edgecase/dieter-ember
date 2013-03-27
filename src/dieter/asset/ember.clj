@@ -1,27 +1,22 @@
 (ns dieter.asset.ember
   (:require
-   dieter.asset
+   [dieter.asset :refer [register]]
    dieter.asset.javascript
-   [clojure.string :as s])
-  (:use
-   [dieter.rhino :only [with-scope call make-pool]]))
-
-(defn filename-without-ext [file]
-  (s/replace (.getName file) #"\..*$" ""))
-
-(defn compile-ember [string filename]
-  (str "Ember.TEMPLATES[\"" filename "\"]=Ember.Handlebars.template("
-       (call "precompileEmber" string)
-       ");"))
+   [dieter.pools :refer [make-pool]]
+   [dieter.jsengine :refer [run-compiler]]))
 
 (def pool (make-pool))
+
 (defn preprocess-handlebars [file]
-  (with-scope pool ["hbs-wrapper.js" "ember-0.9.4.js"]
-    (let [hbs (slurp file)
-          filename (filename-without-ext file)]
-      (compile-ember hbs filename))))
+  (run-compiler pool
+                ["ember-wrapper.js" "handlebars-1.0.0-rc.3.js" "ember-template-compiler-20130321.js"]
+                "compileEmberHandlebarsTemplate"
+                file))
 
 (defrecord Handlebars [file]
   dieter.asset.Asset
-  (read-asset [this options]
+  (read-asset [this]
     (dieter.asset.javascript.Js. (:file this) (preprocess-handlebars (:file this)))))
+
+(register "hbs" map->Handlebars)
+(register "handlebars" map->Handlebars)
